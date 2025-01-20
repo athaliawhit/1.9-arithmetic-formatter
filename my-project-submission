@@ -1,0 +1,69 @@
+# Arithmetic Formatter 
+
+problems = ''
+def arithmetic_arranger(problems, show_answers=False):
+    firstnum = ''
+    secondnum = ''
+    operator = ''
+    underscr = ''
+    sumnums = ''
+
+    newcolumn = ''
+    toprow = ''
+    bottomrow = ''
+    underscrow = ''
+    answrsrow = ''
+
+    #Error exception
+    if len(problems) > 5:
+        return('Error: Too many problems.')
+
+    for prob in problems:         
+    #Split problem string at the space delimiter and assign to variables above
+        firstnum = prob.split(' ')[0]
+        operator = prob.split(' ')[1]
+        secondnum = prob.split(' ')[2]
+    #Error exception 
+        if len(firstnum) > 4 or len(secondnum) > 4:
+            return('Error: Numbers cannot be more than four digits.')
+    #Error exception 
+        if operator not in ["+", "-"]:
+                return("Error: Operator must be '+' or '-'.")   
+    # Error exception 
+        if not firstnum.isdigit() or not secondnum.isdigit():
+            return('Error: Numbers must only contain digits.')
+    #Calculate problems solutions
+        if operator == '+': 
+            sumnums = str(int(firstnum) + int(secondnum))
+        elif operator == '-': 
+            sumnums = str(int(firstnum) - int(secondnum))
+    #Format the layout 
+        width = max(len(firstnum),len(secondnum)) + 2
+        top = str(firstnum.rjust(width))
+        bottom = operator + str(secondnum.rjust(width-1))
+        underscr = '-' * (width)
+        padding = '    '
+        answrs = str(sumnums.rjust(width))
+    #Don't add padding after the last problem set 
+        if prob != problems[-1]:
+            toprow += top + padding
+            bottomrow += bottom + padding
+            underscrow += underscr + padding
+            answrsrow += answrs + padding
+        else: 
+            toprow += top 
+            bottomrow += bottom
+            underscrow += underscr
+            answrsrow += answrs
+            
+    #Format the problem string into columns while also adding 4 spaces after each line 
+    #(but not adding padding after the last problem set?)
+    if show_answers: 
+        newcolumn = toprow + "\n" + bottomrow + "\n" + underscrow + "\n" + answrsrow
+    else: 
+        newcolumn = toprow + "\n" + bottomrow + "\n" + underscrow
+    
+    return newcolumn 
+
+
+
