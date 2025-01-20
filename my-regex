@@ -1,0 +1,66 @@
+# Arithmetic Formatter 
+import re
+problems = ''
+def arithmetic_arranger(problems, show_answers=False):
+    firstnum = ''
+    secondnum = ''
+    operator = ''
+    underscr = ''
+    sumnums = ''
+
+    newcolumn = ''
+    toprow = ''
+    bottomrow = ''
+    underscrow = ''
+    answrsrow = ''
+
+    #Error exception
+    if len(problems) > 5:
+        return('Error: Too many problems.')
+
+    for prob in problems:         
+    #Split problem string at the space delimiter and assign to variables above
+        firstnum = prob.split(' ')[0]
+        operator = prob.split(' ')[1]
+        secondnum = prob.split(' ')[2]
+    #Error exception r
+        if len(firstnum) > 4 or len(secondnum) > 4:
+            return('Error: Numbers cannot be more than four digits.')     
+    #Error exception regex WORKS: Check for digits, addition, subtraction, white space.
+        if (re.search('[^0-9-+\s]+', prob)):
+            if (re.search('[*]', prob) or re.search('[/]', prob)):
+               return("Error Operator must be '+' or '-'.")  
+            return('Error: Numbers must only contain digits.')
+        
+    #Calculate problems solutions
+        if operator == '+': 
+            sumnums = str(int(firstnum) + int(secondnum))
+        elif operator == '-': 
+            sumnums = str(int(firstnum) - int(secondnum))
+    #Elements in the layout 
+        width = max(len(firstnum),len(secondnum)) + 2
+        top = str(firstnum.rjust(width))
+        bottom = operator + str(secondnum.rjust(width-1))
+        underscr = '-' * (width)
+        padding = '    '
+        answrs = str(sumnums.rjust(width))
+    #Format the layout; don't add padding after the last problem set 
+        if prob != problems[-1]:
+            toprow += top + padding
+            bottomrow += bottom + padding
+            underscrow += underscr + padding
+            answrsrow += answrs + padding
+        else: 
+            toprow += top 
+            bottomrow += bottom
+            underscrow += underscr
+            answrsrow += answrs
+            
+    #Display the new layout of problem strings into columns 
+    
+    if show_answers: 
+        newcolumn = toprow + "\n" + bottomrow + "\n" + underscrow + "\n" + answrsrow
+    else: 
+        newcolumn = toprow + "\n" + bottomrow + "\n" + underscrow
+    
+    return newcolumn 
